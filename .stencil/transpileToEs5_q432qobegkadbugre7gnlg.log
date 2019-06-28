@@ -1,0 +1,112 @@
+import { d as registerInstance, e as h, f as Host, g as getElement } from './tooltip-859e260c.js';
+var Portal = /** @class */ (function () {
+    function Portal(hostRef) {
+        var _this = this;
+        registerInstance(this, hostRef);
+        this.parent = null;
+        this.project = function () {
+            if (!_this.projected) {
+                var content = [];
+                if (_this.parent) {
+                    content = Array.from(_this.parent.children).slice();
+                    content.map(function (el) { return _this.portalNode.shadowRoot.querySelector('dom-portal').appendChild(el); });
+                    return;
+                }
+                content = _this.element.shadowRoot.querySelector('slot').assignedNodes();
+                content.map(function (el) { return _this.portalNode.appendChild(el); });
+            }
+        };
+        this.getContainer = function (ownerDocument) {
+            if (_this.container) {
+                return typeof _this.container === 'string' ? ownerDocument.querySelector(_this.container) : _this.container;
+            }
+            return ownerDocument.body;
+        };
+    }
+    Portal.prototype.portalIdChanged = function () {
+        if (!this.projected && this.portalNode) {
+            this.portalNode.portalId = this.portalId;
+        }
+    };
+    Portal.prototype.connectedCallback = function () {
+        var _this = this;
+        if (!this.projected && this.element) {
+            this.portalId = onPortalConnected(this.element);
+            if (document.querySelector("[portal-id=\"" + this.portalId + "\"]")) {
+                return;
+            }
+        }
+        if (!this.projected) {
+            var ownerDocument = this.element.ownerDocument;
+            var container = this.getContainer(ownerDocument);
+            if (this.element.parentElement === null && this.element.parentNode && this.element.parentNode.host) {
+                var parent = this.element.parentNode.host;
+                this.portalNode = ownerDocument.createElement(parent.tagName);
+                parent.setAttribute('portal-id', "" + this.portalId);
+                this.portalNode.setAttribute('portal-id', "" + this.portalId);
+                this.portalNode.setAttribute('projected', '');
+                Array.from(parent.children).slice().forEach(function (child) { return _this.portalNode.appendChild(child); });
+                container.appendChild(this.portalNode);
+                this.addMO(parent);
+                this.parent = parent;
+            }
+            else {
+                this.portalNode = ownerDocument.createElement(this.element.tagName);
+                this.portalNode.setAttribute('projected', '');
+                this.portalNode.setAttribute('portal-id', "" + this.portalId);
+                container.appendChild(this.portalNode);
+                this.addMO();
+            }
+        }
+    };
+    Portal.prototype.disconnectedCallback = function () {
+        if (!this.projected) {
+            this.portalNode.remove();
+            onPortalDisconnected(this.portalId);
+        }
+    };
+    Portal.prototype.addMO = function (element) {
+        if (element === void 0) { element = this.element; }
+        if ('MutationObserver' in window) {
+            this.mo = new MutationObserver(this.project);
+            this.mo.observe(element, {
+                childList: true,
+                attributes: true,
+                subtree: true
+            });
+        }
+    };
+    Portal.prototype.render = function () {
+        if (this.projected) {
+            return (h(Host, { style: { display: 'contents' } }, h("slot", null)));
+        }
+        return (h(Host, { style: { display: 'none' } }, h("slot", null)));
+    };
+    Object.defineProperty(Portal.prototype, "element", {
+        get: function () { return getElement(this); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Portal, "watchers", {
+        get: function () {
+            return {
+                "portalId": ["portalIdChanged"]
+            };
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Portal;
+}());
+function onPortalConnected(element) {
+    portals.push(element);
+    return portals.length - 1;
+}
+function onPortalDisconnected(id) {
+    portals.splice(portals.findIndex(function (p) { return p.portalId === id; }), 1);
+    portals.forEach(function (portal, i) {
+        portal.portalId = i;
+    });
+}
+var portals = [];
+export { Portal as dom_portal };

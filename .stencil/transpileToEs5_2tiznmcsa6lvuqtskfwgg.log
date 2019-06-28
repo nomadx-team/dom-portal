@@ -1,0 +1,15 @@
+System.register(['./p-cba8eb42.system.js'], function (exports, module) {
+    'use strict';
+    var patchBrowser, bootstrapLazy;
+    return {
+        setters: [function (module) {
+                patchBrowser = module.a;
+                bootstrapLazy = module.b;
+            }],
+        execute: function () {
+            patchBrowser().then(function (resourcesUrl) {
+                return bootstrapLazy([["p-p7wnlkek.system", [[1, "dom-portal", { "container": [1], "portalId": [1538, "portal-id"], "projected": [516], "hosted": [4] }]]]], { resourcesUrl: resourcesUrl });
+            });
+        }
+    };
+});

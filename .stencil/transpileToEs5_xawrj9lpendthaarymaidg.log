@@ -1,0 +1,7 @@
+import { c as patchEsm, b as bootstrapLazy } from './tooltip-859e260c.js';
+var defineCustomElements = function (win, options) {
+    return patchEsm().then(function () {
+        bootstrapLazy([["dom-portal", [[1, "dom-portal", { "container": [1], "portalId": [1538, "portal-id"], "projected": [516], "hosted": [4] }]]]], options);
+    });
+};
+export { defineCustomElements };

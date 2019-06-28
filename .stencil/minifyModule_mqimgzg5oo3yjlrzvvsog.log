@@ -1,0 +1,1 @@
+System.register(["./p-cba8eb42.system.js"],function(e,t){"use strict";var r,n;return{setters:[function(e){r=e.a;n=e.b}],execute:function(){r().then(function(e){return n([["p-p7wnlkek.system",[[1,"dom-portal",{container:[1],portalId:[1538,"portal-id"],projected:[516],hosted:[4]}]]]],{resourcesUrl:e})})}}});

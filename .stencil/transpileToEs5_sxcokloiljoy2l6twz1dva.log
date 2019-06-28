@@ -1,0 +1,4 @@
+import { a as patchBrowser, b as bootstrapLazy } from './tooltip-859e260c.js';
+patchBrowser().then(function (resourcesUrl) {
+    return bootstrapLazy([["dom-portal", [[1, "dom-portal", { "container": [1], "portalId": [1538, "portal-id"], "projected": [516], "hosted": [4] }]]]], { resourcesUrl: resourcesUrl });
+});
